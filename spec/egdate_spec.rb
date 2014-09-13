@@ -8,14 +8,22 @@ describe 'egdate' do
     expect(egdate.like '03 FEB 2001').to eq '02 MAR 1972'
   end
 
-  it 'should use egdate format object to format output' do
-    egdate = EgDate.new date(month: 5, day: 24, year: 2006)
-    format = double('format', print: 'formatted date')
-    format_provider = double('format provider', format: format)
-    
-    formatted = egdate.like '04 JUN 2011', format_provider: format_provider
+  describe 'delegation to format and example parser' do
+    let(:a_date) { date(month: 5, day: 24, year: 2006) }
+    let(:format) { double('format') }
+    let(:format_spec) { double('format_spec') }
+    let(:format_provider) { double('format provider') }
+    let(:example_parser) { double('example parser') }
 
-    expect(formatted).to eq 'formatted date'
-    expect(format_provider).to have_received(:format).with([:day_padded, ' ', :month_3_char, ' ', :year_4_digit])
+    it 'should use egdate format object to print date to format specified by example parser' do
+      example_parser.stub(:parse).with('example').and_return format_spec
+      format_provider.stub(:format).with(format_spec).and_return(format)
+      format.stub(:print).with(a_date).and_return('formatted date')
+      
+      formatted = EgDate.new(a_date).like 'example', format_provider: format_provider, example_parser: example_parser
+
+      expect(formatted).to eq 'formatted date'
+    end
   end
+
 end
