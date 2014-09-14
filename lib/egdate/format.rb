@@ -5,8 +5,8 @@ module Eg
     class FormatError < StandardError
     end
     class Format
-      def self.format(parts)
-        Format.new parts
+      def self.format(*parts)
+        Format.new parts.flatten
       end
       def initialize(parts)
         @parts = parts

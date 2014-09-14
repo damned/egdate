@@ -34,4 +34,9 @@ describe Format do
       expect(format.print date(year: 1977)).to eq '1977'
     end
   end
+  describe 'self.format' do
+    it 'should allow single argument passed directly not as array' do
+      expect(Format.format([ :day_padded ]).print(date)).to eq Format.format(:day_padded).print(date)
+    end
+  end
 end
