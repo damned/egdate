@@ -15,6 +15,8 @@ module Eg
             parts += sequence.each_char.to_a
           elsif sequence.type == :digit
             parts << :year_4_digit
+          elsif sequence.type == :alphabetic
+            parts << :month_3_char
           end 
         }
         parts

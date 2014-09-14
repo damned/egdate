@@ -12,28 +12,18 @@ module Eg
         end
       end
       def sequences(string)
-        sequences = []
-        last_type = nil
-        index = 0
-        sequence = ''
-        string.each_char {|c|
-          index += 1
-          last_char = index == string.length
-          if '.-: '.include? c
-            type = :literal 
+        
+        string.split(/(\d+)/).map {|s|s.split(/([A-z]+)/)}.flatten.reject(&:empty?).map { |sequence|
+          sequence.extend Typed
+          if !sequence.match(/\d/).nil?
+            sequence.type = :digit
+          elsif !sequence.match(/[A-z]/).nil?
+            sequence.type = :alphabetic
           else
-            type = :digit
+            sequence.type = :literal
           end
-          sequence = '' if type != last_type
-          sequence += c
-          if last_char || (type != last_type && !last_type.nil?)
-            sequence.extend Typed
-            sequence.type = type
-            sequences << sequence
-          end
-          last_type = type
-        }
-        sequences
+          sequence
+        }  
       end
     end
   end
