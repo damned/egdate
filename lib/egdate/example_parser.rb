@@ -10,11 +10,10 @@ module Eg
       def parse(example)
         return [:day_padded, ' ', :month_3_char, ' ', :year_4_digit] if example.start_with?('0')
         parts = []
-        sequencer.sequences(example).each { |type_and_sequence|  
-          type, sequence = type_and_sequence
-          if type == :literal
+        sequencer.sequences(example).each { |sequence|  
+          if sequence.type == :literal
             parts += sequence.each_char.to_a
-          elsif type == :digit
+          elsif sequence.type == :digit
             parts << :year_4_digit
           end 
         }
