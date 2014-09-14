@@ -11,26 +11,33 @@ module Eg
       def initialize(parts)
         @parts = parts
         parts.each do |part|
-          raise FormatError.new if part != :month_3_char && part != :day_padded && part != :year_4_digit && !part.is_a?(String)
+          raise FormatError.new unless part_formats.has_key?(part) || part.is_a?(String)
         end
       end
       def print(date)
-        return '02 MAR 1972' if parts.size > 1 && !parts.first.is_a?(String)
         parts.map { |part|
           if part.is_a? String
             part 
-          elsif part == :month_3_char
-            'JUL'
-          elsif part == :year_4_digit
-            date.year.to_s
-          elsif part == :day_padded
-            '03'
+          elsif part_formats.has_key? part 
+            date.strftime(part_formats[part]).upcase
           else
+            ''
           end
         }.join
       end
+      
       private
       attr_reader :parts
+      
+      STRFTIME_FORMATS = {
+        month_3_char: '%b', 
+        year_4_digit: '%Y', 
+        day_padded: '%d'
+      }
+      
+      def part_formats
+        STRFTIME_FORMATS
+      end
     end
   end
 end

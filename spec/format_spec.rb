@@ -27,6 +27,10 @@ describe Format do
       it 'should print multiple literal strings' do
         expect(format('i', ' ', 'am', ' ', 'literals').print date()).to eq 'i am literals'
       end
+      it 'should print a mix of literals and date part specifiers' do
+        format = format(:year_4_digit, '-', :month_3_char, '-', :day_padded, '!')
+        expect(format.print date(year: 2011, month: 5, day: 17)).to eq '2011-MAY-17!'
+      end
     end
   end
   describe 'self.format' do
