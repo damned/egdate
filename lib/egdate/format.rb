@@ -16,14 +16,18 @@ module Eg
       end
       def print(date)
         return '02 MAR 1972' if parts.size > 1 && !parts.first.is_a?(String)
-        printed = ''
-        parts.each { |part|
-          printed += part if part.is_a? String
-          printed += 'JUL' if part == :month_3_char
-          printed += date.year.to_s if part == :year_4_digit
-          printed += '03' if part == :day_padded
-        }
-        printed
+        parts.map { |part|
+          if part.is_a? String
+            part 
+          elsif part == :month_3_char
+            'JUL'
+          elsif part == :year_4_digit
+            date.year.to_s
+          elsif part == :day_padded
+            '03'
+          else
+          end
+        }.join
       end
       private
       attr_reader :parts
