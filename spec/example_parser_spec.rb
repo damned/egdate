@@ -17,7 +17,7 @@ describe ExampleParser do
   it 'should take the first three characters of a month to be a 3-char month' do
     expect(parser.parse 'jan').to eq [:month_3_char]
   end
-  xit 'should take two digits to be a year when they are greater than 31 so cannot be a day of the month' do
+  xit 'should take two digits to be a year when they are greater than 31 as they then cannot be a day of the month' do
     expect(parser.parse '32').to eq [:year_2_digit]
   end
 end
